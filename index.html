@@ -9,7 +9,7 @@
 body{margin:0;font-family:Pretendard,-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
 header{position:sticky;top:0;z-index:5;background:#fff;color:var(--ink);padding:14px 20px 0;border-bottom:1px solid var(--line)}
 .top{display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto}
-.logo{font-weight:800;font-size:22px;letter-spacing:-.5px}.logo{display:flex;align-items:center}.d3{display:inline-flex;gap:10px;margin:0 14px 0 16px}.d3 i{width:9px;height:9px;border-radius:50%;display:block}.lbl{font-size:14px;font-weight:800;letter-spacing:.35em}
+.logo{font-weight:800;font-size:22px;letter-spacing:-.5px}.logo .d3{margin:0 12px 0 14px}.logo{display:flex;align-items:center}.d3{display:inline-flex;gap:10px;margin:0 14px 0 16px}.d3 i{width:9px;height:9px;border-radius:50%;display:block}.lbl{font-size:14px;font-weight:800;letter-spacing:.35em}
 .asof{font-size:12px;color:var(--gray)}
 .chips{display:flex;gap:6px;overflow:auto;max-width:1100px;margin:12px auto 0;padding-bottom:12px}
 .chip{border:1px solid #E5E8EB;background:#fff;color:#4E5968;border-radius:99px;padding:6px 14px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
@@ -96,11 +96,39 @@ table.dt tr.tot td{background:#FAFBFC;font-weight:700}
 .dot{display:inline-block;width:8px;height:8px;border-radius:4px;margin-right:6px}
 .sbar{display:inline-block;width:60px;height:6px;background:#EEF0F3;border-radius:3px;margin-right:8px;vertical-align:middle;overflow:hidden}.sbar i{display:block;height:100%;background:var(--blue)}
 .slots{display:flex;flex-wrap:wrap;gap:6px}.disp{display:grid;grid-template-columns:repeat(4,14px);gap:3px;padding:5px;background:#F7F8FA;border-radius:8px}.disp i{width:14px;height:22px;border-radius:4px;display:block}
+/* 토스 대시보드식 왼쪽 메뉴 (PC) */
+.wmk{height:17px;display:block}
+.ptitle{display:none;font-size:24px;font-weight:800;margin:4px 0 2px;letter-spacing:-.4px}
+#sb{display:none}
+.sbl{display:flex;align-items:center;padding:8px 6px 20px;white-space:nowrap}.sbl .wmk{height:14px}.sbl .d3{margin:0 8px 0 10px;gap:5px}.sbl .d3 i{width:6px;height:6px}.sbl .lbl{font-size:11px;letter-spacing:.22em}
+.acct{background:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.05);margin-bottom:8px;position:relative}
+.acct .an{font-size:12px;color:#6B7684}.acct .role{background:#E8F3FF;color:#156DFF;font-size:11px;font-weight:700;border-radius:4px;padding:1px 5px;margin-left:4px}
+.acct select{appearance:none;-webkit-appearance:none;border:0;background:none;font:inherit;font-size:15px;font-weight:700;color:#191F28;padding:3px 0 0;cursor:pointer;width:100%;outline:none}
+.acct .chev{position:absolute;right:14px;bottom:14px;color:#8B95A1;pointer-events:none;font-size:13px}
+.sbb{display:flex;gap:6px;margin-bottom:12px}.sbb button{flex:1;border:0;background:#EEF0F3;border-radius:8px;padding:7px 0;font:inherit;font-size:12px;color:#4E5968;cursor:pointer}
+#snav{display:block;max-width:none;margin:0}
+#snav .g{font-size:12px;color:#8B95A1;margin:16px 10px 6px}
+#snav button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;padding:9px 10px;border-radius:10px;font:inherit;font-size:14px;color:#333D4B;cursor:pointer;text-align:left;border-bottom:0}
+#snav button:hover{background:#F2F4F6}
+#snav button.on{background:#E8EBEE;font-weight:700;color:#191F28}
+#snav svg{width:18px;height:18px;flex:none;color:#8B95A1}#snav button.on svg{color:#156DFF}
+@media(min-width:960px){
+  .cmp{grid-template-columns:1fr!important}.cmp .side,.cmp .body>h3{display:none}
+  #sb{display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;width:248px;background:#F9FAFB;border-right:1px solid #EEF0F3;padding:18px 14px;overflow:auto;z-index:6}
+  #wrap{margin-left:248px}
+  header{padding:22px 32px 0}
+  header .logo, header nav{display:none}
+  .top{max-width:none;justify-content:flex-end;margin:0}
+  .ptitle{display:block}
+  .chips{max-width:none;margin:12px 0 0}
+  main{max-width:1180px;margin:0;padding:20px 32px 60px}
+  footer{margin:0;padding:0 32px 30px;max-width:none}
+}
 footer{max-width:1100px;margin:0 auto;padding:0 14px 30px;font-size:11px;color:var(--gray)}
 
 #login{position:fixed;inset:0;z-index:50;background:#0E0E0E;color:#fff;display:flex;align-items:center;justify-content:center;padding:24px}
 .lgbox{width:100%;max-width:380px;text-align:center}
-.wm{font-size:38px;font-weight:800;letter-spacing:-.5px}
+.wm{height:34px;filter:invert(1);display:block;margin:0 auto}
 .d3l{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 40px}.d3l i{width:9px;height:9px;border-radius:50%;display:block}.d3l b{margin-left:14px;letter-spacing:.35em;font-size:15px}
 .lgt{color:#B9BDC4;font-size:15px;margin:0 0 20px}
 .gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;background:#fff;color:#0E0E0E;border:0;border-radius:99px;padding:17px;font:inherit;font-size:16px;font-weight:700;cursor:pointer}
@@ -111,20 +139,29 @@ footer{max-width:1100px;margin:0 auto;padding:0 14px 30px;font-size:11px;color:v
 </style></head>
 <body>
 <div id="login"><div class="lgbox">
-  <div class="wm">TAP SHOP BAR</div>
+  <img src="tsb_wordmark_h.png" alt="TAP SHOP BAR" class="wm">
   <div class="d3l"><i style="background:#F43131"></i><i style="background:#156DFF"></i><i style="background:#FFC100"></i><b>N O T E</b></div>
   <p class="lgt">탭샵바 본사 계정(@tsb.wine)으로 로그인해 주세요.</p>
   <button id="gbtn" class="gbtn"><svg width="20" height="20" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Google 계정으로 로그인</button>
   <p id="lerr" class="lerr"></p>
   <p class="lsm">본사 전용 · 숫자는 로그인한 뒤 서버에서만 받아요</p>
 </div></div>
+<aside id="sb">
+  <div class="sbl"><img src="tsb_wordmark_h.png" alt="TAP SHOP BAR" class="wmk"><span class="d3"><i style="background:#F43131"></i><i style="background:#156DFF"></i><i style="background:#FFC100"></i></span><b class="lbl">NOTE</b></div>
+  <div class="acct" id="acct"></div>
+  <div class="sbb"><button onclick="S.tab='map';render();scrollTo(0,0)">기능 지도</button><button onclick="sessionStorage.removeItem('erp_tok');location.reload()">로그아웃</button></div>
+  <nav id="snav"></nav>
+</aside>
+<div id="wrap">
 <header>
-  <div class="top"><div class="logo">TAP SHOP BAR<span class="d3"><i style="background:#F43131"></i><i style="background:#156DFF"></i><i style="background:#FFC100"></i></span><b class="lbl">NOTE</b></div><div class="asof" id="asof"></div></div>
+  <div class="top"><div class="logo"><img src="tsb_wordmark_h.png" alt="TAP SHOP BAR" class="wmk"><span class="d3"><i style="background:#F43131"></i><i style="background:#156DFF"></i><i style="background:#FFC100"></i></span><b class="lbl">NOTE</b></div><div class="asof" id="asof"></div></div>
+  <h1 class="ptitle" id="ptitle"></h1>
   <div class="chips" id="chips"></div>
   <nav id="nav"></nav>
 </header>
 <main id="main"></main>
 <footer id="foot"></footer>
+</div>
 
 <script src="https://accounts.google.com/gsi/client" async></script>
 <script>

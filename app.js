@@ -2,7 +2,7 @@
 const D = window.__D;
 const BR = ['청계','상암','마곡','동대문'];
 const BCOL = {청계:'#156DFF',상암:'#5B9BFF',마곡:'#A9C8FF',동대문:'#26334D'};
-const TABS = [['home','홈'],['compare','매장 비교'],['book','장부'],['cash','자금'],['wine','원가·재고'],['check','정산 진단'],['map','기능 지도']];
+const TABS = [['home','홈'],['compare','매장 비교'],['book','실적 캘린더'],['cash','자금'],['wine','원가·재고'],['check','정산 진단'],['map','기능 지도']];
 const S = {br:'전체', tab:'home', month:null, sel:null};
 const F = ['food','show','cafe','liquor','etc','prepaid_use','cash','cnt','dc','svc','card','easy','kakao','coupang','baemin','sikkwon','ds_store','ds_partner','transfer','branch_pay','other','net','gross','charge','pay_total','diff_pay'];
 const DOW = ['일','월','화','수','목','금','토'];
@@ -57,10 +57,32 @@ function depositDate(s){
 console.assert(depositDate('2026-10-16')==='2026-10-21' && depositDate('2026-10-18')==='2026-10-21' && depositDate('2026-10-19')==='2026-10-22' && depositDate('2026-10-21')==='2026-10-26', 'depositDate 규칙 확인');
 
 // ---------- UI shell ----------
+const NAVG = [[null,[['home','홈']]],['매출',[['compare:store','매장별'],['compare:period','기간별'],['compare:cat','카테고리별'],['compare:pay','결제수단별'],['book','실적 캘린더']]],['돈',[['cash','자금'],['check','정산 진단']]],['원가',[['wine','원가·재고']]]];
+const ICO = {
+  home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  compare:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  book:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  cash:'<rect x="2" y="6" width="20" height="13" rx="2"/><path d="M16 12.5h2M2 10h20"/>',
+  check:'<path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
+  wine:'<path d="M8 3h8l-.5 6a3.5 3.5 0 0 1-7 0zM12 12.5V20M8.5 21h7"/>',
+  'compare:store':'<path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/>',
+  'compare:period':'<path d="M3 17l5-5 4 3 8-8M15 7h5v5"/>',
+  'compare:cat':'<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.2"/>',
+  'compare:pay':'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',
+  map:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>'
+};
+const ico = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICO[k]||''}</svg>`;
+const WHO = {'hello@tsb.wine':['장분도','관리자'],'kj@tsb.wine':['나기정','대표'],'hw.park@tsb.wine':['박한울','매니저']};
 function shell(){
+  const go = k => k.startsWith('compare:') ? `S.tab='compare';S.cmp.view='${k.slice(8)}';S.cmp.sort=null;render();scrollTo(0,0)` : `S.tab='${k}';render();scrollTo(0,0)`;
+  const isOn = k => k.startsWith('compare:') ? (S.tab==='compare' && S.cmp.view===k.slice(8)) : S.tab===k;
   document.getElementById('asof').textContent = `${md(LAST)} 마감 기준 · 갱신 ${D.generated}`;
+  document.getElementById('ptitle').textContent = S.tab==='compare' ? VIEWS[S.cmp.view][0]+' 매출' : (TABS.find(t=>t[0]===S.tab)||['',''])[1];
   document.getElementById('chips').innerHTML = ['전체',...BR].map(b=>`<button class="chip ${S.br===b?'on':''}" onclick="S.br='${b}';S.sel=null;render()">${b==='전체'?'전체 지점':b}</button>`).join('');
-  document.getElementById('nav').innerHTML = TABS.map(([k,t])=>`<button class="${S.tab===k?'on':''}" onclick="S.tab='${k}';render();scrollTo(0,0)">${t}</button>`).join('');
+  document.getElementById('nav').innerHTML = TABS.map(([k,t])=>`<button class="${S.tab===k?'on':''}" onclick="${go(k)}">${t}</button>`).join('');
+  const me = window.__ERP ? (WHO[window.__ERP.email] || [window.__ERP.email.split('@')[0], '본사']) : ['탭샵바', '본사'];
+  document.getElementById('acct').innerHTML = `<div class="an">${me[0]}님<span class="role">${me[1]}</span></div><select onchange="S.br=this.value;S.sel=null;render()">${['전체',...BR].map(b=>`<option value="${b}" ${S.br===b?'selected':''}>${b==='전체'?'탭샵바 전체 지점':'탭샵바 '+b+'점'}</option>`).join('')}</select><span class="chev">▾</span>`;
+  document.getElementById('snav').innerHTML = NAVG.map(([g,items])=>(g?`<div class="g">${g}</div>`:'')+items.map(([k,t])=>`<button class="${isOn(k)?'on':''}" onclick="${go(k)}">${ico(k)}${t}</button>`).join('')).join('');
   document.getElementById('foot').innerHTML = `데이터: 지점별 일정산 v3 시트(직원 마감 입력) · POS자동 탭(SD포스·OK포스 새벽 수집) · 클로브 통장 라벨링 · POS 디스펜서 기록 · 금액은 VAT 포함 실매출(선불권 충전액 제외) · 탭샵바 전략기획실 내부용`;
 }
 function render(){ shell(); document.getElementById('chips').style.display = S.tab==='compare' ? 'none' : ''; document.getElementById('main').innerHTML = ({home,compare,book,cash,wine,check,map})[S.tab](); }
