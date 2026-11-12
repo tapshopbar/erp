@@ -2,7 +2,7 @@
 const D = window.__D;
 const BR = ['청계','상암','마곡','동대문'];
 const BCOL = {청계:'#156DFF',상암:'#5B9BFF',마곡:'#A9C8FF',동대문:'#26334D'};
-const TABS = [['home','홈'],['compare','매장 비교'],['book','실적 캘린더'],['cash','자금'],['wine','원가·재고'],['check','정산 진단'],['map','기능 지도']];
+const TABS = [['home','홈'],['compare','매장 비교'],['book','실적 캘린더'],['cash','자금'],['wine','원가·재고'],['labor','본사 비용'],['check','정산 진단'],['map','기능 지도']];
 const S = {br:'전체', tab:'home', month:null, sel:null};
 const F = ['food','show','cafe','liquor','etc','prepaid_use','cash','cnt','dc','svc','card','easy','kakao','coupang','baemin','sikkwon','ds_store','ds_partner','transfer','branch_pay','other','net','gross','charge','pay_total','diff_pay'];
 const DOW = ['일','월','화','수','목','금','토'];
@@ -57,7 +57,7 @@ function depositDate(s){
 console.assert(depositDate('2026-10-16')==='2026-10-21' && depositDate('2026-10-18')==='2026-10-21' && depositDate('2026-10-19')==='2026-10-22' && depositDate('2026-10-21')==='2026-10-26', 'depositDate 규칙 확인');
 
 // ---------- UI shell ----------
-const NAVG = [[null,[['home','홈']]],['매출',[['compare:store','매장별'],['compare:period','기간별'],['compare:cat','카테고리별'],['compare:pay','결제수단별'],['book','실적 캘린더']]],['돈',[['cash','자금'],['check','정산 진단']]],['원가',[['wine','원가·재고']]]];
+const NAVG = [[null,[['home','홈']]],['매출',[['compare:store','매장별'],['compare:period','기간별'],['compare:cat','카테고리별'],['compare:pay','결제수단별'],['book','실적 캘린더']]],['돈',[['cash','자금'],['check','정산 진단'],['labor','본사 비용']]],['원가',[['wine','원가·재고']]]];
 const ICO = {
   home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
   compare:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
@@ -69,6 +69,7 @@ const ICO = {
   'compare:period':'<path d="M3 17l5-5 4 3 8-8M15 7h5v5"/>',
   'compare:cat':'<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.2"/>',
   'compare:pay':'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',
+  labor:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18.5 20a6 6 0 0 0-3-5.2"/>',
   map:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>'
 };
 const ico = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICO[k]||''}</svg>`;
@@ -85,7 +86,7 @@ function shell(){
   document.getElementById('snav').innerHTML = NAVG.map(([g,items])=>(g?`<div class="g">${g}</div>`:'')+items.map(([k,t])=>`<button class="${isOn(k)?'on':''}" onclick="${go(k)}">${ico(k)}${t}</button>`).join('')).join('');
   document.getElementById('foot').innerHTML = `데이터: 지점별 일정산 v3 시트(직원 마감 입력) · POS자동 탭(SD포스·OK포스 새벽 수집) · 클로브 통장 라벨링 · POS 디스펜서 기록 · 금액은 VAT 포함 실매출(선불권 충전액 제외) · 탭샵바 전략기획실 내부용`;
 }
-function render(){ shell(); document.getElementById('chips').style.display = S.tab==='compare' ? 'none' : ''; document.getElementById('main').innerHTML = ({home,compare,book,cash,wine,check,map})[S.tab](); }
+function render(){ shell(); document.getElementById('chips').style.display = (S.tab==='compare'||S.tab==='labor') ? 'none' : ''; document.getElementById('main').innerHTML = ({home,compare,book,cash,wine,check,map,labor:laborTab})[S.tab](); }
 
 // ---------- 홈 ----------
 function home(){
@@ -503,6 +504,54 @@ function foodCard(){
     <h3 style="margin-top:14px;font-size:14px">원가율 높은 메뉴</h3>
     ${hi.map(m=>`<div class="row"><span>${m.name}<br><small>판매가 ${fmt(m.price)} · 원가 ${fmt(m.cost)} (VAT 포함)</small></span><b class="${m.rate>=F.warn?'down':''}">${(m.rate*100).toFixed(0)}%</b></div>`).join('')}
     <div class="note">이번 달 푸드 매출 ${man(fs)}원에 메뉴 평균 원가율을 곱하면 푸드 원가는 약 ${man(fs*avg/100)}원(단순 평균 기준). 메뉴별 판매 수량이 붙으면 실제 원가율로 바뀌어요 · 원가: ${F.src} · 마지막 업데이트 ${F.updated}</div></div>`;
+}
+
+
+// ---------- 본사 비용 (0단계 증명: 2026 기준선 → 2027-01 비교) ----------
+function laborTab(){
+  const L = D.labor; if (!L) return '<div class="card">인건비 기준선 데이터가 없어요.</div>';
+  const ms = L.months, pre = ms.filter(m=>m.ym<='2026-07'), now = ms.at(-1);
+  const avg = (arr,f) => arr.reduce((s,m)=>s+f(m),0)/Math.max(arr.length,1);
+  const lab = m => m.pay + m.outsrc;
+  const A = {sales:avg(pre,m=>m.sales), lab:avg(pre,lab), heads:avg(pre,m=>m.heads), hq:avg(pre,m=>m.hq_pay), hqh:avg(pre,m=>m.hq_heads)};
+  const hqpl = Object.values(L.hqpl), hqplAvg = hqpl.reduce((a,b)=>a+b,0)/Math.max(hqpl.length,1);
+  const pc = (a,b) => b ? (a/b*100).toFixed(1)+'%' : '-';
+  const W=1000,H=250,mx=Math.max(...ms.map(m=>m.sales)),bw=W/ms.length, Y=v=>H-30-v/mx*(H-60);
+  let g='';
+  ms.forEach((m,i)=>{ const x=i*bw+bw*0.18, w=bw*0.64;
+    g+=`<rect x="${x}" y="${Y(m.sales)}" width="${w}" height="${H-30-Y(m.sales)}" rx="4" fill="#D6E4FF"><title>${m.ym} 매출 ${won(m.sales)}</title></rect>`;
+    g+=`<rect x="${x+w*0.2}" y="${Y(lab(m))}" width="${w*0.6}" height="${H-30-Y(lab(m))}" rx="3" fill="#156DFF"><title>${m.ym} 인건비 ${won(lab(m))}</title></rect>`;
+    g+=`<rect x="${x+w*0.2}" y="${Y(m.hq_pay)}" width="${w*0.6}" height="${H-30-Y(m.hq_pay)}" rx="3" fill="#26334D"><title>${m.ym} 본사 급여 ${won(m.hq_pay)}</title></rect>`;
+    g+=`<text x="${i*bw+bw/2}" y="${Y(m.sales)-8}" font-size="12" text-anchor="middle" font-weight="700" fill="${m.rate>40?'#F04452':'#191F28'}">${m.rate}%</text><text x="${i*bw+bw/2}" y="${H-10}" font-size="12" text-anchor="middle" fill="#8B95A1">${+m.ym.slice(5)}월</text>`; });
+  return `<div class="grid two">
+  <div class="card span2"><h3>본사 비용 · 0단계 기준선 <span class="pill own">2027년 1월에 비교</span></h3>
+    <div class="kv" style="grid-template-columns:repeat(4,1fr);margin-top:0">
+      <div><span>1~7월 평균 인건비율</span><b>${pc(A.lab,A.sales)}</b></div>
+      <div><span>10월 인건비율</span><b class="down">${now.rate}%</b></div>
+      <div><span>본사 급여 비중 (1~7월 → 10월)</span><b>${pc(A.hq,A.sales)} → <span class="down">${pc(now.hq_pay,now.sales)}</span></b></div>
+      <div><span>본사 인원 (1~7월 평균 → 10월)</span><b>${A.hqh.toFixed(1)}명 → ${now.hq_heads}명</b></div>
+    </div>
+    <div class="sub" style="margin-top:12px">매장은 7개에서 4개로 줄면서 인원이 ${Math.round(A.heads)}명에서 ${now.heads}명으로 줄었어요. 그런데 본사는 거의 그대로라 <b>매출 대비 본사 비중이 약 ${(now.hq_pay/now.sales/(A.hq/A.sales)).toFixed(1)}배</b>가 됐어요. 0단계는 바로 이 본사 비중을 AI 본사로 낮추는 걸 증명하는 거예요.</div></div>
+  <div class="card span2"><h3>월별 매출 · 인건비 · 본사 급여 <small>막대 위 % = 인건비율 (급여+아웃소싱 ÷ 매출)</small></h3>
+    <svg viewBox="0 0 ${W} ${H}" width="100%">${g}</svg>
+    <div class="legend"><span><i style="background:#D6E4FF"></i>매출(실매출)</span><span><i style="background:#156DFF"></i>인건비(급여+아웃소싱)</span><span><i style="background:#26334D"></i>본사 급여</span></div></div>
+  <div class="card span2"><h3>월별 표</h3><div class="tw"><table class="dt"><thead><tr><th>월</th><th class="n">매장 수</th><th class="n">매출</th><th class="n">급여</th><th class="n">아웃소싱</th><th class="n">인건비율</th><th class="n">인원</th><th class="n">본사 인원</th><th class="n">본사 급여</th><th class="n">본사 비중</th></tr></thead><tbody>
+    ${ms.map(m=>`<tr><td>${+m.ym.slice(5)}월</td><td class="n">${m.stores}</td><td class="n">${fmt(m.sales)}</td><td class="n">${fmt(m.pay)}</td><td class="n">${fmt(m.outsrc)}</td><td class="n ${m.rate>40?'down':''}">${m.rate}%</td><td class="n">${m.heads}</td><td class="n">${m.hq_heads}</td><td class="n">${fmt(m.hq_pay)}</td><td class="n">${pc(m.hq_pay,m.sales)}</td></tr>`).join('')}
+    </tbody></table></div>
+    <div class="note">${L.note}</div></div>
+  <div class="card"><h3>본사 전체 비용 (손익정산서) <small>2025년 12월~2026년 4월</small></h3>
+    <div class="big">${man(hqplAvg)}<span style="font-size:16px;font-weight:600">원/월</span></div>
+    <div class="sub">본사 손익정산서의 인건비 전체예요. 근로소득, 사업소득, 외주용역, 마케팅 대행, 4대보험이 들어가요. 급여 대장의 본사 급여보다 훨씬 커요. 같은 기간 매출 대비 약 <b>${pc(hqplAvg, avg(ms.filter(m=>m.ym<='2026-04'),m=>m.sales))}</b>예요.</div>
+    ${Object.entries(L.hqpl).map(([k,v])=>`<div class="row"><span>${k.replace('-','년 ')}월</span><b>${won(v)}</b></div>`).join('')}</div>
+  <div class="card"><h3>AI 본사 (지금까지) <span class="pill ok">진행 중</span></h3>
+    <div class="kv" style="margin-top:0"><div><span>대체한 본사 일</span><b>4명분</b></div><div><span>그 4명 월 인건비</span><b>${man(L.ai_replaced)}</b></div><div><span>AI 이용료</span><b class="up">${man(L.ai_month)}</b></div></div>
+    <div class="sub" style="margin-top:12px">회계·정산, 운영·총무, 마케팅, 인사 일을 충원 없이 AI가 1차로 하고 사람이 검토해요. AI 비용은 그 인건비의 약 ${(L.ai_month/L.ai_replaced*100).toFixed(0)}%예요.</div>
+    <h3 style="margin-top:16px;font-size:14px">2027년 1월에 볼 숫자</h3>
+    <div class="row"><span>본사 비용 (급여+외주+AI)</span><small>기준 ${man(hqplAvg)}/월</small></div>
+    <div class="row"><span>매출 대비 본사 비용률</span><small>기준 ${pc(hqplAvg, avg(ms.filter(m=>m.ym<='2026-04'),m=>m.sales))}</small></div>
+    <div class="row"><span>매장 인건비율</span><small>기준 1~7월 ${pc(A.lab,A.sales)}</small></div>
+    <div class="row"><span>정산 실수 (정산 진단 큰 차이)</span><small>기준 11월 1~11일</small></div></div>
+  </div>`;
 }
 
 // ---------- 기능 지도 (캐시노트 벤치마크) ----------
