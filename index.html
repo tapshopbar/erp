@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#0E0E0E">
+<title>TSB NOTE · 탭샵바 본사</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--yellow:#FFC100;--wine:#156DFF;--navy:#191F28;--rose:#C9DCFF;--ink:#191F28;--gray:#8B95A1;--line:#EEF0F3;--bg:#F2F4F6;--blue:#156DFF;--up:#156DFF;--down:#F04452}
+*{box-sizing:border-box}
+body{margin:0;font-family:Pretendard,-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+header{position:sticky;top:0;z-index:5;background:#fff;color:var(--ink);padding:14px 20px 0;border-bottom:1px solid var(--line)}
+.top{display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto}
+.logo{font-weight:800;font-size:22px;letter-spacing:-.5px}.logo{display:flex;align-items:center}.d3{display:inline-flex;gap:10px;margin:0 14px 0 16px}.d3 i{width:9px;height:9px;border-radius:50%;display:block}.lbl{font-size:14px;font-weight:800;letter-spacing:.35em}
+.asof{font-size:12px;color:var(--gray)}
+.chips{display:flex;gap:6px;overflow:auto;max-width:1100px;margin:12px auto 0;padding-bottom:12px}
+.chip{border:1px solid #E5E8EB;background:#fff;color:#4E5968;border-radius:99px;padding:6px 14px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
+.chip.on{background:var(--navy);color:#fff;font-weight:700;border-color:var(--navy)}
+nav{display:flex;max-width:1100px;margin:0 auto;gap:2px}
+nav button{flex:1;background:none;border:0;color:var(--gray);font:inherit;font-size:14px;padding:10px 0 12px;cursor:pointer;border-bottom:3px solid transparent}
+nav button.on{color:var(--blue);font-weight:700;border-color:var(--blue)}
+main{max-width:1100px;margin:0 auto;padding:16px 14px 60px}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:860px){.grid.two{grid-template-columns:1fr 1fr}.span2{grid-column:span 2}}
+.card{background:#fff;border-radius:20px;padding:20px 20px 18px}
+.card h3{margin:0 0 12px;font-size:17px;color:var(--ink);font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.big{font-size:30px;font-weight:800;letter-spacing:-.8px}
+.mid{font-size:20px;font-weight:700}
+.sub{font-size:13px;color:var(--gray);margin-top:4px;line-height:1.5}
+.up{color:var(--up)}.down{color:var(--down)}
+.pill{display:inline-block;font-size:11px;font-weight:700;border-radius:6px;padding:2px 7px;margin-left:6px;vertical-align:middle}
+.pill.ok{background:#E8F0FF;color:var(--blue)}.pill.part{background:#FFF4D1;color:#8A6400}.pill.no{background:#F1ECEA;color:var(--gray)}.pill.red{background:#FCE8EA;color:var(--down)}.pill.own{background:var(--blue);color:#fff}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.kv div{background:#F7F8FA;border-radius:14px;padding:12px}
+.kv b{display:block;font-size:15px;margin-top:2px}
+.kv span{font-size:11px;color:var(--gray)}
+.brief{background:#EAF2FF;color:var(--ink)}
+.brief h3{color:var(--blue)}
+.brief li{margin:6px 0;line-height:1.55;font-size:14px}
+.brief ul{margin:0;padding-left:18px}
+.prog{height:10px;background:var(--bg);border-radius:9px;overflow:hidden;margin:12px 0 6px;position:relative}
+.prog i{position:absolute;left:0;top:0;bottom:0;background:var(--wine);border-radius:9px}
+.prog i.ghost{background:var(--rose);opacity:.6}
+.row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.row:last-child{border:0}
+.row small{color:var(--gray);font-size:12px}
+.bar{height:8px;border-radius:6px;background:var(--wine);display:inline-block}
+.stack{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:8px 0}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--gray)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .h{font-size:11px;text-align:center;color:var(--gray);padding:4px 0}
+.cal .d{border-radius:10px;min-height:58px;padding:6px;font-size:11px;cursor:pointer;border:2px solid transparent;position:relative}
+.cal .d b{display:block;font-size:12px;margin-top:6px}
+.cal .d.sel{border-color:var(--navy)}
+.cal .d.empty{cursor:default}
+.cal .d .flag{position:absolute;top:5px;right:6px;width:6px;height:6px;border-radius:3px;background:var(--down)}
+.seg{display:inline-flex;background:var(--bg);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;font:inherit;font-size:12px;padding:5px 10px;border-radius:8px;cursor:pointer;color:var(--gray)}
+.seg button.on{background:#fff;color:var(--ink);font-weight:700}
+input.goal{width:140px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:inherit;font-size:13px;text-align:right}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12px;color:var(--gray);font-weight:600}
+.card h3 small,.card h3>span{font-size:13px;color:var(--gray);font-weight:500}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.note{font-size:12px;color:var(--gray);line-height:1.6;margin-top:10px}
+.issue{border-left:3px solid var(--line);padding:6px 10px;margin:8px 0;font-size:13px;line-height:1.5}
+.issue.lv-hi{border-color:var(--down)}.issue.lv-mid{border-color:var(--yellow)}
+svg text{font-family:Pretendard,sans-serif}
+@media(max-width:600px){.top{flex-wrap:wrap}.asof{width:100%;margin-top:4px}.logo{font-size:19px}.d3{gap:8px;margin:0 10px 0 12px}.kv b{font-size:13px}.big{font-size:26px}}
+.tw{overflow-x:auto}
+.cmp{display:grid;grid-template-columns:1fr;gap:12px}
+.cmp>*{min-width:0}
+nav{overflow-x:auto}
+@media(max-width:600px){nav button{flex:none;padding:10px 12px 12px}}
+@media(min-width:860px){.cmp{grid-template-columns:170px 1fr}}
+.side{display:flex;gap:6px;overflow:auto}
+@media(min-width:860px){.side{flex-direction:column;background:#fff;border-radius:20px;padding:12px;align-self:start}}
+.side button{border:0;background:none;font:inherit;font-size:14px;text-align:left;padding:10px 12px;border-radius:10px;cursor:pointer;color:#4E5968;white-space:nowrap}
+.side button.on{background:#E8F3FF;color:var(--blue);font-weight:700}
+.subtabs{display:flex;gap:18px;border-bottom:1px solid var(--line);margin:-4px 0 12px}
+.subtabs button{border:0;background:none;font:inherit;font-size:14px;padding:8px 0;color:var(--gray);cursor:pointer;border-bottom:2px solid transparent}
+.subtabs button.on{color:var(--ink);font-weight:700;border-color:var(--ink)}
+.fbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px}
+.fchip{border:1px solid #E5E8EB;background:#fff;border-radius:10px;padding:7px 12px;font:inherit;font-size:13px;color:#4E5968;cursor:pointer}
+.fchip.on{background:#E8F3FF;border-color:#E8F3FF;color:var(--blue);font-weight:600}
+.range{display:inline-flex;align-items:center;gap:4px;font-size:13px;color:var(--gray)}
+.range input{border:1px solid #E5E8EB;border-radius:10px;padding:6px 8px;font:inherit;font-size:13px;color:var(--ink)}
+.dd{position:relative}
+.menu{position:absolute;right:0;top:38px;z-index:4;background:#fff;border:1px solid #E5E8EB;border-radius:12px;padding:8px 12px;box-shadow:0 8px 24px rgba(0,0,0,.08);min-width:200px}
+.menu label{display:block;font-size:13px;padding:5px 0;white-space:nowrap}
+table.dt{border:1px solid var(--line);border-radius:12px;border-collapse:separate;border-spacing:0;overflow:hidden}
+table.dt th{background:#F7F8FA;white-space:nowrap;padding:11px 10px}
+table.dt td{padding:11px 10px;white-space:nowrap}
+table.dt th.sort{cursor:pointer}.si{color:#C4CAD1;font-size:11px}
+table.dt tr.tot td{background:#FAFBFC;font-weight:700}
+.dot{display:inline-block;width:8px;height:8px;border-radius:4px;margin-right:6px}
+.sbar{display:inline-block;width:60px;height:6px;background:#EEF0F3;border-radius:3px;margin-right:8px;vertical-align:middle;overflow:hidden}.sbar i{display:block;height:100%;background:var(--blue)}
+.slots{display:flex;flex-wrap:wrap;gap:6px}.disp{display:grid;grid-template-columns:repeat(4,14px);gap:3px;padding:5px;background:#F7F8FA;border-radius:8px}.disp i{width:14px;height:22px;border-radius:4px;display:block}
+footer{max-width:1100px;margin:0 auto;padding:0 14px 30px;font-size:11px;color:var(--gray)}
+
+#login{position:fixed;inset:0;z-index:50;background:#0E0E0E;color:#fff;display:flex;align-items:center;justify-content:center;padding:24px}
+.lgbox{width:100%;max-width:380px;text-align:center}
+.wm{font-size:38px;font-weight:800;letter-spacing:-.5px}
+.d3l{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 40px}.d3l i{width:9px;height:9px;border-radius:50%;display:block}.d3l b{margin-left:14px;letter-spacing:.35em;font-size:15px}
+.lgt{color:#B9BDC4;font-size:15px;margin:0 0 20px}
+.gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;background:#fff;color:#0E0E0E;border:0;border-radius:99px;padding:17px;font:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.gbtn[disabled]{opacity:.6}
+.lerr{color:#FF8A8A;font-size:14px;min-height:20px;margin:16px 0 0}
+.lsm{color:#6B7079;font-size:12px;margin-top:22px}
+.who{font-size:12px;color:var(--gray);margin-left:10px}.who a{color:var(--gray)}
+</style></head>
+<body>
+<div id="login"><div class="lgbox">
+  <div class="wm">TAP SHOP BAR</div>
+  <div class="d3l"><i style="background:#F43131"></i><i style="background:#156DFF"></i><i style="background:#FFC100"></i><b>N O T E</b></div>
+  <p class="lgt">탭샵바 본사 계정(@tsb.wine)으로 로그인해 주세요.</p>
+  <button id="gbtn" class="gbtn"><svg width="20" height="20" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Google 계정으로 로그인</button>
+  <p id="lerr" class="lerr"></p>
+  <p class="lsm">본사 전용 · 숫자는 로그인한 뒤 서버에서만 받아요</p>
+</div></div>
+<header>
+  <div class="top"><div class="logo">TAP SHOP BAR<span class="d3"><i style="background:#F43131"></i><i style="background:#156DFF"></i><i style="background:#FFC100"></i></span><b class="lbl">NOTE</b></div><div class="asof" id="asof"></div></div>
+  <div class="chips" id="chips"></div>
+  <nav id="nav"></nav>
+</header>
+<main id="main"></main>
+<footer id="foot"></footer>
+
+<script src="https://accounts.google.com/gsi/client" async></script>
+<script>
+const API = 'https://script.google.com/macros/s/AKfycbzAPf2d29bJWVMuq7BcbLzfOwM9LiKklsUlj0mbV33B1kPJk6JvLXDGcKGF-u1ptFH1/exec', CID = '207804770718-9ilhgaprc47k3ul52nnreofbbu62lpt3.apps.googleusercontent.com';
+const $l = id => document.getElementById(id);
+const err = m => { $l('lerr').textContent = m || ''; $l('gbtn').disabled = false; };
+async function load(tok){
+  $l('gbtn').disabled = true; err(''); $l('lerr').textContent = '숫자를 불러오는 중…';
+  let j; try { const r = await fetch(API, {method:'POST', credentials:'omit', body: JSON.stringify({action:'data', access_token: tok})}); j = await r.json(); }
+  catch(e){ return err('서버에 연결하지 못했어요. 잠시 후 다시 시도해 주세요.'); }
+  if (!j.ok){ sessionStorage.removeItem('erp_tok');
+    return err(j.error==='FORBIDDEN' ? j.email + ' 계정은 본사 전용 화면 권한이 없어요.' : j.error==='AUTH' ? '로그인이 만료됐어요. 다시 눌러 주세요.' : '오류: ' + (j.message||j.error)); }
+  if (!j.data) return err('아직 올라간 데이터가 없어요.');
+  sessionStorage.setItem('erp_tok', tok);
+  window.__D = j.data; window.__ERP = {email:j.email, role:j.role, api:API, tok};
+  const s = document.createElement('script'); s.src = 'app.js?v=' + encodeURIComponent(j.data.generated||'');
+  s.onload = () => { $l('login').remove(); const a = document.getElementById('asof'); if (a) a.insertAdjacentHTML('beforeend', ` <span class="who">${j.email} · <a href="#" onclick="sessionStorage.removeItem('erp_tok');location.reload();return false">로그아웃</a></span>`); };
+  document.body.appendChild(s);
+}
+$l('gbtn').onclick = () => {
+  if (!window.google || !google.accounts) return err('구글 로그인을 불러오는 중이에요. 잠시 후 다시 눌러 주세요.');
+  google.accounts.oauth2.initTokenClient({client_id: CID, scope: 'openid email profile', callback: r => r && r.access_token ? load(r.access_token) : err('로그인이 취소됐어요.')}).requestAccessToken({prompt:''});
+};
+const saved = sessionStorage.getItem('erp_tok'); if (saved) load(saved);
+</script></body></html>
