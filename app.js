@@ -73,7 +73,7 @@ const ICO = {
   map:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>'
 };
 const ico = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICO[k]||''}</svg>`;
-const WHO = {'hello@tsb.wine':['장분도','관리자'],'kj@tsb.wine':['나기정','대표'],'hw.park@tsb.wine':['박한울','매니저']};
+const WHO = {'hello@tsb.wine':['장분도','관리자'],'kj@tsb.wine':['나기정','대표'],'hw.park@tsb.wine':['박한울','매니저'],'curo@tsb.wine':['이창훈','CTO']};
 function shell(){
   const go = k => k.startsWith('compare:') ? `S.tab='compare';S.cmp.view='${k.slice(8)}';S.cmp.sort=null;render();scrollTo(0,0)` : `S.tab='${k}';render();scrollTo(0,0)`;
   const isOn = k => k.startsWith('compare:') ? (S.tab==='compare' && S.cmp.view===k.slice(8)) : S.tab===k;
